@@ -1,71 +1,35 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 4000;
 
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// Define the path to your JSON file
+const filePath = path.join(__dirname, 'user.json'); // Assuming user.json is in the same directory as app.js
 
-// Logging Middleware
-app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()}: ${req.ip} - ${req.method} ${req.path}`);
-    next();
-});
-
-// User Registration Route
-app.post("/api/register", (req, res) => {
-    const userData = req.body;
-    if (!userData.username || !userData.email) {
-        return res.status(400).json({ success: false, message: 'Username and email are required' });
+// Define a GET endpoint to read the JSON file
+app.get('/user', (req, res) => {
+  // Read the JSON file
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    let users = [];
+    // Parse the JSON data
     try {
-        const data = fs.readFileSync('./users.json', 'utf8');
-        users = JSON.parse(data);
-    } catch (error) {
-        if (error.code !== 'ENOENT') {
-            console.error('Error reading user data:', error);
-            return res.status(500).json({ success:userData, message: 'Internal server error' });
-        }
+      const user = JSON.parse(data);
+      // Send the user data as a response
+      res.json(user);
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    users.push(userData);
-
-    try {
-        fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
-        res.json({ success: true, message: 'User registered successfully' });
-    } catch (error) {
-        console.error('Error writing user data:', error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
-    }
-});
-
-// Show all users endpoint
-app.get("/api/users", (req, res) => {
-    let users;
-    try {
-        const data = fs.readFileSync('./users.json', 'utf8');
-        users = JSON.parse(data);
-    } catch (error) {
-        if (error.code !== 'ENOENT') {
-            console.error('Error reading user data:', error);
-            return res.status(500).json({ success: false, message: 'Internal server error' });
-        }
-    }
-
-    res.json(users);
-});
-
-// Dummy route for demonstration
-app.get("/api/dummy", (req, res) => {
-    res.json({ message: 'Dummy route' });
+  });
 });
 
 // Start the server
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
