@@ -57,7 +57,7 @@
     {
         "id": 5,
         "courseBanner": "./Asset/images/c6.png",
-        "CourseCategroies": "Developemet",
+        "CourseCategroies": "Development",
         "CoursePrice": "$29.82",
         "CourseName": "Professional Ceramic Moulding for Beginners",
         "CourseLessons": "2 Lessons",
@@ -123,7 +123,7 @@
     {
         "id": 11,
         "courseBanner": "./Asset/images/c6.png",
-        "CourseCategroies": "Developemet",
+        "CourseCategroies": "Development",
         "CoursePrice": "$29.82",
         "CourseName": "Professional Ceramic Moulding for Beginners",
         "CourseLessons": "2 Lessons",
