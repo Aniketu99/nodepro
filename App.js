@@ -29,7 +29,7 @@ App.get("/Api/courses",(req,res)=>{
      res.json({courses});   
 });
 
-App.get("/Api/courses:id",(req,res)=>{
+App.get("/Api/courses/:id",(req,res)=>{
      
      let a = (req.params.id);
 
