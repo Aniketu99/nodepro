@@ -34,7 +34,7 @@ app.post("/api/register", (req, res) => {
 });
 
 app.get("/api/user", (req, res) => {
-     res.json({ courses: user });
+     res.json({ user});
  });
  
 
