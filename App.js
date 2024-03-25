@@ -1,29 +1,3 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const bodyParser = require('body-parser');
-
-const app = express();
-app.use(bodyParser.json()); // Middleware to parse JSON bodies
-
-const filePath = path.join(__dirname, 'user.json');
-
-app.get('/user', (req, res) => {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading file:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-    try {
-      const users = JSON.parse(data);
-      res.json(users);
-    } catch (parseError) {
-      console.error('Error parsing JSON:', parseError);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
-});
-
 app.post('/register', (req, res) => {
   const userData = req.body;
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -38,6 +12,10 @@ app.post('/register', (req, res) => {
       console.error('Error parsing JSON:', parseError);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
+    
+    // Log existing user data
+    console.log('Existing users:', users);
+    
     users.push(userData);
     fs.writeFile(filePath, JSON.stringify(users, null, 2), (err) => {
       if (err) {
@@ -47,9 +25,4 @@ app.post('/register', (req, res) => {
       res.json({ message: 'User registered successfully' });
     });
   });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
 });
