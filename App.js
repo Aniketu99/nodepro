@@ -9,9 +9,11 @@ const port = process.env.PORT || 4000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Logging Middleware with log rotation
-const accessLogStream = fs.createWriteStream('access.log', { flags: 'a' });
-app.use(require('morgan')('combined', { stream: accessLogStream }));
+// Logging Middleware
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()}: ${req.ip} - ${req.method} ${req.path}`);
+    next();
+});
 
 // User Registration Route
 app.post("/api/register", (req, res) => {
@@ -20,77 +22,47 @@ app.post("/api/register", (req, res) => {
         return res.status(400).json({ success: false, message: 'Username and email are required' });
     }
 
-    fs.readFile('./users.json', 'utf8', (err, data) => {
-        if (err && err.code !== 'ENOENT') {
-            console.error('Error reading user data:', err);
+    let users = [];
+    try {
+        const data = fs.readFileSync('users.json', 'utf8');
+        users = JSON.parse(data);
+    } catch (error) {
+        if (error.code !== 'ENOENT') {
+            console.error('Error reading user data:', error);
             return res.status(500).json({ success: false, message: 'Internal server error' });
         }
+    }
 
-        let users = [];
-        if (data) {
-            try {
-                users = JSON.parse(data);
-            } catch (error) {
-                console.error('Error parsing user data:', error);
-                return res.status(500).json({ success: false, message: 'Internal server error' });
-            }
-        }
+    users.push(userData);
 
-        users.push(userData);
-
-        fs.writeFile('./users.json', JSON.stringify(users, null, 2), (err) => {
-            if (err) {
-                console.error('Error writing user data:', err);
-                return res.status(500).json({ success: false, message: 'Internal server error' });
-            }
-            res.json({ success: true, message: 'User registered successfully' });
-        });
-    });
+    try {
+        fs.writeFileSync('users.json', JSON.stringify(users, null, 2));
+        res.json({ success: true, message: 'User registered successfully' });
+    } catch (error) {
+        console.error('Error writing user data:', error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
 });
 
 // Show all users endpoint
 app.get("/api/users", (req, res) => {
-    fs.readFile('./users.json', 'utf8', (err, data) => {
-        if (err && err.code !== 'ENOENT') {
-            console.error('Error reading user data:', err);
+    let users = [];
+    try {
+        const data = fs.readFileSync('users.json', 'utf8');
+        users = JSON.parse(data);
+    } catch (error) {
+        if (error.code !== 'ENOENT') {
+            console.error('Error reading user data:', error);
             return res.status(500).json({ success: false, message: 'Internal server error' });
         }
-
-        let users = [];
-        if (data) {
-            try {
-                users = JSON.parse(data);
-            } catch (error) {
-                console.error('Error parsing user data:', error);
-                return res.status(500).json({ success: false, message: 'Internal server error' });
-            }
-        }
-
-        res.json(users);
-    });
-});
-
-// Courses Routes
-const coursesJson = require("./courses.json");
-
-app.get("/api/courses", (req, res) => {
-    res.json({ courses: coursesJson });
-});
-
-app.get("/api/courses/:id", (req, res) => {
-    const courseId = req.params.id;
-    const course = coursesJson.find(course => course.id === courseId);
-    if (course) {
-        res.json({ course });
-    } else {
-        res.status(404).json({ message: 'Course not found' });
     }
+
+    res.json(users);
 });
 
-app.get("/api/courses/categories/:category", (req, res) => {
-    const category = req.params.category;
-    const filteredCourses = coursesJson.filter(course => course.CourseCategories === category);
-    res.json({ courses: filteredCourses });
+// Dummy route for demonstration
+app.get("/api/dummy", (req, res) => {
+    res.json({ message: 'Dummy route' });
 });
 
 // Start the server
