@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
-const filePath = './user.json';
+const filePath = path.join(__dirname, 'user.json');
 
 // Create an empty array in the user.json file if it doesn't exist
 fs.exists(filePath, (exists) => {
@@ -39,6 +39,10 @@ app.get('/user', (req, res) => {
 // Endpoint to register a new user
 app.post('/register', (req, res) => {
   const userData = req.body;
+  if (!userData || Object.keys(userData).length === 0) {
+    return res.status(400).json({ error: 'User data is required' });
+  }
+
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading file:', err);
@@ -51,10 +55,10 @@ app.post('/register', (req, res) => {
       console.error('Error parsing JSON:', parseError);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-    
+
     // Log existing user data
     console.log('Existing users:', users);
-    
+
     users.push(userData);
     fs.writeFile(filePath, JSON.stringify(users, null, 2), (err) => {
       if (err) {
