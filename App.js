@@ -34,7 +34,7 @@ app.post("/api/register", (req, res) => {
 });
 
 app.get("/api/user", (req, res) => {
-     res.json({ courses: coursesJson });
+     res.json({ courses: user });
  });
  
 
@@ -43,12 +43,12 @@ app.get("/api/user", (req, res) => {
 const coursesJson = require("./courses.json");
 
 app.get("/api/courses", (req, res) => {
-    res.json({ courses: coursesJson });
+    res.json({ courses: courses});
 });
 
 app.get("/api/courses/:id", (req, res) => {
     const courseId = req.params.id;
-    const course = coursesJson.find(course => course.id === courseId);
+    const course = courses.find(course => course.id === courseId);
     if (course) {
         res.json({ course });
     } else {
@@ -58,7 +58,7 @@ app.get("/api/courses/:id", (req, res) => {
 
 app.get("/api/courses/categories/:category", (req, res) => {
     const category = req.params.category;
-    const filteredCourses = coursesJson.filter(course => course.CourseCategories === category);
+    const filteredCourses = courses.filter(course => course.CourseCategories === category);
     res.json({ courses: filteredCourses });
 });
 
