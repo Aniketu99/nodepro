@@ -22,19 +22,14 @@ app.use((req, res, next) => {
 app.post("/api/register", (req, res) => {
     const userData = req.body;
     try {
-        const userJson = JSON.parse(fs.readFileSync('./user.json'));
+        const userJson = JSON.parse(fs.readFileSync('user.json'));
         userJson.push(userData);
-        s.writeFileSync('./user.json', JSON.stringify(userJson));
-        res.json({userJson});
+        fs.writeFileSync('user.json', JSON.stringify(userJson, null, 2));
+        res.json({ success: true, message: 'User registered successfully' });
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
-});
-
-app.get("/api/user", (req, res) => {
-    const userJson = JSON.parse(fs.readFileSync('./user.json'));
-    res.json({userJson});
 });
 
 // Courses Routes
