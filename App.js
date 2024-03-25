@@ -9,14 +9,14 @@ const port = process.env.PORT || 4000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Logging Middleware
-app.use((req, res, next) => {
-    const logData = `${new Date().toISOString()}: ${req.ip} - ${req.method} ${req.path}\n`;
-    fs.appendFile('log.txt', logData, (err) => {
-        if (err) console.error('Error writing to log file:', err);
-    });
-    next();
-});
+// // Logging Middleware
+// app.use((req, res, next) => {
+//     const logData = `${new Date().toISOString()}: ${req.ip} - ${req.method} ${req.path}\n`;
+//     fs.appendFile('log.txt', logData, (err) => {
+//         if (err) console.error('Error writing to log file:', err);
+//     });
+//     next();
+// });
 
 // User Registration Route
 app.post("/api/register", (req, res) => {
