@@ -46,7 +46,7 @@ app.post("/api/register", (req, res) => {
 
 // Show all users endpoint
 app.get("/api/users", (req, res) => {
-    let users = [];
+    let users;
     try {
         const data = fs.readFileSync('./users.json', 'utf8');
         users = JSON.parse(data);
