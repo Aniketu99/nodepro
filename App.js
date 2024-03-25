@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const courses = require("./courses.json");
-const user = require("./user.json");
+
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -23,10 +22,12 @@ app.use(bodyParser.json());
 // User Registration Route
 
 app.post("/api/register", (req, res) => {
-    const userData = req.body;
+     const userData = req.body;
     try {
-        user.push(userData);
-        res.json({ success: true, message: 'User registered successfully', data:userData});
+        const userJson = JSON.parse(fs.readFileSync('user.json'));
+        userJson.push(userData);
+        fs.writeFileSync('user.json', JSON.stringify(userJson, null, 2));
+        res.json({ success: true, message: 'User registered successfully' });
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
