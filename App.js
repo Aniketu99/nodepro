@@ -1,11 +1,11 @@
 const express = require('express');
 const fs = require('fs');
-const path = require('path');
 
 const app = express();
 
-const filePath = path.join(__dirname, 'user.json'); 
+const filePath = './user.json'; 
 
+console.log(filePath);
 
 app.get('/user', (req, res) => {
 
