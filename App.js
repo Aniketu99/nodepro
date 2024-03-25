@@ -22,12 +22,12 @@ App.use((req,res,next)=>{
 
 //Routes
 
-App.get("/api/courses",(req,res)=>{
+App.get("/Api/courses",(req,res)=>{
 
      res.json({Data});   
 });
 
-App.get("/api/courses/:id",(req,res)=>{
+App.get("/Api/courses:id",(req,res)=>{
      
      let a = (req.params.id);
 
@@ -40,13 +40,13 @@ App.get("/api/courses/:id",(req,res)=>{
      res.json({abc});
 });
 
-App.get("/api/courses/:categories",(req,res)=>{
+App.get("/Api/courses:categories",(req,res)=>{
 
      var ca = (req.params.categories);
      
      var str = ca.substring(1);
 
-     var cate = Data.filter(data => data.course_categories === str );
+     var cate = Data.map(data => data.course_categories === str );
    
       res.json({cate});   
 });
