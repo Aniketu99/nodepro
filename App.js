@@ -22,6 +22,9 @@ app.use(bodyParser.urlencoded({
 
 }));
 
+app.use(express.json());
+app.use(express.urlencoded());
+
 
 app.use((req,res,next)=>{
    
