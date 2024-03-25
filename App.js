@@ -1,76 +1,52 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const app = express();
-app.use(bodyParser.json()); // Middleware to parse JSON bodies
+const port = 3000;
 
-const filePath = path.join(__dirname, 'user.json');
+// Middleware to parse request body
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Create an empty array in the user.json file if it doesn't exist
-fs.exists(filePath, (exists) => {
-  if (!exists) {
-    fs.writeFile(filePath, '[]', (err) => {
-      if (err) {
-        console.error('Error creating file:', err);
-      }
-    });
-  }
+// Serve HTML file
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
 });
 
-// Endpoint to get all users
-app.get('/user', (req, res) => {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading file:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-    try {
-      const users = JSON.parse(data);
-      res.json(users);
-    } catch (parseError) {
-      console.error('Error parsing JSON:', parseError);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
-});
-
-// Endpoint to register a new user
+// POST endpoint to handle form submission
 app.post('/register', (req, res) => {
-  const { firstName, lastName, phone, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-  // Read existing users from JSON file
-  fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-          console.error('Error reading users file:', err);
-          res.status(500).send('Error processing registration');
-          return;
-      }
+    // Read existing users from JSON file
+    fs.readFile('users.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading users file:', err);
+            res.status(500).send('Error processing registration');
+            return;
+        }
 
-      let users = [];
-      if (data) {
-          users = JSON.parse(data);
-      }
+        let users = [];
+        if (data) {
+            users = JSON.parse(data);
+        }
 
-      // Add new user to the array
-      users.push({ firstName, lastName, phone, email, password });
+        // Add new user to the array
+        users.push({ username, email, password });
 
-      // Write updated users array back to the file
-      fs.writeFile('users.json', JSON.stringify(users, null, 4), err => {
-          if (err) {
-              console.error('Error writing users file:', err);
-              res.status(500).send('Error processing registration');
-              return;
-          }
-          console.log('New user added successfully:', firstName, lastName);
-          res.send('Registration successful!');
-      });
-  });
+        // Write updated users array back to the file
+        fs.writeFile('users.json', JSON.stringify(users, null, 4), err => {
+            if (err) {
+                console.error('Error writing users file:', err);
+                res.status(500).send('Error processing registration');
+                return;
+            }
+            console.log('New user added successfully:', username);
+            res.send('Registration successful!');
+        });
+    });
 });
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// Start server
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });
