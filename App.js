@@ -1,10 +1,12 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
+const bodyParser = require('body-parser');
 
 const app = express();
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
-const filePath = './user.json';
+const filePath = path.join(__dirname, 'user.json');
 
 app.get('/user', (req, res) => {
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -13,8 +15,8 @@ app.get('/user', (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
     try {
-      const user = JSON.parse(data);
-      res.json(user);
+      const users = JSON.parse(data);
+      res.json(users);
     } catch (parseError) {
       console.error('Error parsing JSON:', parseError);
       res.status(500).json({ error: 'Internal Server Error' });
