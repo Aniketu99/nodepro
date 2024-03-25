@@ -1,16 +1,26 @@
 const express = require('express');
 
+const App = express();
+
+const port = process.env.PORT || 4000;
+
 const file = require("fs");
 
 const courses = require("./courses.json");
 
 const user = require("./user.json");
 
-const App = express();
+const bodyParser = require('body-parser');
 
-const port = process.env.PORT || 4000;
 
 //middleware 
+
+App.use( bodyParser.json() ); 
+      
+App.use(bodyParser.urlencoded({  
+  extended: true
+}));
+
 
 App.use((req,res,next)=>{
    
@@ -22,7 +32,18 @@ App.use((req,res,next)=>{
     next();
 })
 
-//Routes
+// Routes for web Authantication
+
+App.post("/Api/register",(req,res)=>{
+
+     userdata = req.body;
+
+     user.push(userdata);
+     res.json({userdata});
+
+});
+
+//Routes for courses
 
 App.get("/Api/courses",(req,res)=>{
 
