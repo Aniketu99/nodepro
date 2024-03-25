@@ -15,12 +15,9 @@ const bodyParser = require('body-parser');
 
 //middleware 
 
-app.use(express.bodyParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.json());
-
-app.use(express.urlencoded());
-
+app.use(bodyParser.json());
 
 app.use((req,res,next)=>{
    
