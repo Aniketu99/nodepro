@@ -1,6 +1,6 @@
 const express = require('express');
 
-const App = express();
+const app = express();
 
 const port = process.env.PORT || 4000;
 
@@ -15,14 +15,15 @@ const bodyParser = require('body-parser');
 
 //middleware 
 
-App.use( bodyParser.json() ); 
+app.use( bodyParser.json() ); 
       
-App.use(bodyParser.urlencoded({  
+app.use(bodyParser.urlencoded({  
   extended: true
+
 }));
 
 
-App.use((req,res,next)=>{
+app.use((req,res,next)=>{
    
     file.appendFile('log.txt',`\n ${Date.now()}:${req.ip}:${req.method}:${req.path}`,(error ,d)=> {
 
@@ -34,7 +35,7 @@ App.use((req,res,next)=>{
 
 // Routes for web Authantication
 
-App.post("/Api/register",(req,res)=>{
+app.post("/Api/register",(req,res)=>{
 
      userdata = req.body;
 
@@ -45,12 +46,12 @@ App.post("/Api/register",(req,res)=>{
 
 //Routes for courses
 
-App.get("/Api/courses",(req,res)=>{
+app.get("/Api/courses",(req,res)=>{
 
      res.json({courses});   
 });
 
-App.get("/Api/courses/:id",(req,res)=>{
+app.get("/Api/courses/:id",(req,res)=>{
      
      let a = (req.params.id);
 
@@ -63,7 +64,7 @@ App.get("/Api/courses/:id",(req,res)=>{
      res.json({abc});
 });
 
-App.get("/Api/courses/categories/:categories",(req,res)=>{
+app.get("/Api/courses/categories/:categories",(req,res)=>{
 
      var ca = (req.params.categories);
      
@@ -83,7 +84,7 @@ App.get("/Api/courses/categories/:categories",(req,res)=>{
 });
 
 
-App.listen(port,()=>{
+app.listen(port,()=>{
 
      console.log("server start");
 });
