@@ -2,7 +2,9 @@ const express = require('express');
 
 const file = require("fs");
 
-const Data = require("./Data.json");
+const courses = require("./courses.json");
+
+const user = require("./user.json");
 
 const App = express();
 
@@ -24,7 +26,7 @@ App.use((req,res,next)=>{
 
 App.get("/Api/courses",(req,res)=>{
 
-     res.json({Data});   
+     res.json({courses});   
 });
 
 App.get("/Api/courses:id",(req,res)=>{
@@ -33,7 +35,7 @@ App.get("/Api/courses:id",(req,res)=>{
 
      let b = a.substring(1);
 
-     var abc = Data.find(d => d.id == b);
+     var abc = courses.find(d => d.id == b);
 
      console.log(abc);
 
@@ -46,7 +48,7 @@ App.get("/Api/courses:categories",(req,res)=>{
      
      var str = ca.substring(1);
 
-     var cate = Data.map(data => data.course_categories === str );
+     var cate = courses.map(data => data.course_categories === str );
    
       res.json({cate});   
 });
