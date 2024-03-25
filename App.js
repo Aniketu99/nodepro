@@ -32,6 +32,11 @@ app.post("/api/register", (req, res) => {
     }
 });
 
+app.get("/api/user", (req, res) => {
+    const userJson = JSON.parse(fs.readFileSync('./user.json'));
+    res.json({userJson});
+});
+
 // Courses Routes
 const coursesJson = require("./courses.json");
 
