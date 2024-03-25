@@ -15,14 +15,10 @@ const bodyParser = require('body-parser');
 
 //middleware 
 
-app.use( bodyParser.json() ); 
-      
-app.use(bodyParser.urlencoded({  
-  extended: true
-
-}));
+app.use(express.bodyParser());
 
 app.use(express.json());
+
 app.use(express.urlencoded());
 
 
