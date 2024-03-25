@@ -20,7 +20,7 @@ app.post("/api/register", (req, res) => {
         return res.status(400).json({ success: false, message: 'Username and email are required' });
     }
 
-    fs.readFile('users.json', 'utf8', (err, data) => {
+    fs.readFile('./users.json', 'utf8', (err, data) => {
         if (err && err.code !== 'ENOENT') {
             console.error('Error reading user data:', err);
             return res.status(500).json({ success: false, message: 'Internal server error' });
@@ -38,7 +38,7 @@ app.post("/api/register", (req, res) => {
 
         users.push(userData);
 
-        fs.writeFile('users.json', JSON.stringify(users, null, 2), (err) => {
+        fs.writeFile('./users.json', JSON.stringify(users, null, 2), (err) => {
             if (err) {
                 console.error('Error writing user data:', err);
                 return res.status(500).json({ success: false, message: 'Internal server error' });
@@ -50,7 +50,7 @@ app.post("/api/register", (req, res) => {
 
 // Show all users endpoint
 app.get("/api/users", (req, res) => {
-    fs.readFile('users.json', 'utf8', (err, data) => {
+    fs.readFile('./users.json', 'utf8', (err, data) => {
         if (err && err.code !== 'ENOENT') {
             console.error('Error reading user data:', err);
             return res.status(500).json({ success: false, message: 'Internal server error' });
