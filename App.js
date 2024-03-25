@@ -48,7 +48,15 @@ App.get("/Api/courses/:categories",(req,res)=>{
      
      var str = ca.substring(1);
 
-     var cate = courses.map(data => data.course_categories === str );
+     var cate = [];
+
+     courses.forEach((item) =>{
+        
+          if(item.CourseCategroies == str){
+
+               cate.push(item);
+          }
+     })
    
       res.json({cate});   
 });
