@@ -38,35 +38,34 @@ app.get('/user', (req, res) => {
 
 // Endpoint to register a new user
 app.post('/register', (req, res) => {
-  const userData = req.body;
-  if (!userData || Object.keys(userData).length === 0) {
-    return res.status(400).json({ error: 'User data is required' });
-  }
+  const { firstName, lastName, phone, email, password } = req.body;
 
+  // Read existing users from JSON file
   fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading file:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-    let users = [];
-    try {
-      users = JSON.parse(data);
-    } catch (parseError) {
-      console.error('Error parsing JSON:', parseError);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-
-    // Log existing user data
-    console.log('Existing users:', users);
-
-    users.push(userData);
-    fs.writeFile(filePath, JSON.stringify(users, null, 2), (err) => {
       if (err) {
-        console.error('Error writing file:', err);
-        return res.status(500).json({ error: 'Internal Server Error' });
+          console.error('Error reading users file:', err);
+          res.status(500).send('Error processing registration');
+          return;
       }
-      res.json({ message: 'User registered successfully' });
-    });
+
+      let users = [];
+      if (data) {
+          users = JSON.parse(data);
+      }
+
+      // Add new user to the array
+      users.push({ firstName, lastName, phone, email, password });
+
+      // Write updated users array back to the file
+      fs.writeFile('users.json', JSON.stringify(users, null, 4), err => {
+          if (err) {
+              console.error('Error writing users file:', err);
+              res.status(500).send('Error processing registration');
+              return;
+          }
+          console.log('New user added successfully:', firstName, lastName);
+          res.send('Registration successful!');
+      });
   });
 });
 
