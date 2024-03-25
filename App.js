@@ -24,19 +24,19 @@ app.post("/api/register", (req, res) => {
 
     let users = [];
     try {
-        const data = fs.readFileSync('users.json', 'utf8');
+        const data = fs.readFileSync('./users.json', 'utf8');
         users = JSON.parse(data);
     } catch (error) {
         if (error.code !== 'ENOENT') {
             console.error('Error reading user data:', error);
-            return res.status(500).json({ success: false, message: 'Internal server error' });
+            return res.status(500).json({ success:userData, message: 'Internal server error' });
         }
     }
 
     users.push(userData);
 
     try {
-        fs.writeFileSync('users.json', JSON.stringify(users, null, 2));
+        fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
         res.json({ success: true, message: 'User registered successfully' });
     } catch (error) {
         console.error('Error writing user data:', error);
@@ -48,7 +48,7 @@ app.post("/api/register", (req, res) => {
 app.get("/api/users", (req, res) => {
     let users = [];
     try {
-        const data = fs.readFileSync('users.json', 'utf8');
+        const data = fs.readFileSync('./users.json', 'utf8');
         users = JSON.parse(data);
     } catch (error) {
         if (error.code !== 'ENOENT') {
