@@ -1,52 +1,78 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require('path');
+const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3000;
+app.use(bodyParser.json()); // Middleware to parse JSON bodies
+app.use(bodyParser.urlencoded({ extended: true })); // Middleware to parse URL-encoded form data
 
-// Middleware to parse request body
-app.use(bodyParser.urlencoded({ extended: true }));
+const filePath = "./user.json";
 
-// Serve HTML file
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
-
-// POST endpoint to handle form submission
-app.post('/register', (req, res) => {
-    const { username, email, password } = req.body;
-
-    // Read existing users from JSON file
-    fs.readFile('users.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading users file:', err);
-            res.status(500).send('Error processing registration');
-            return;
-        }
-
-        let users = [];
-        if (data) {
-            users = JSON.parse(data);
-        }
-
-        // Add new user to the array
-        users.push({ username, email, password });
-
-        // Write updated users array back to the file
-        fs.writeFile('users.json', JSON.stringify(users, null, 4), err => {
-            if (err) {
-                console.error('Error writing users file:', err);
-                res.status(500).send('Error processing registration');
-                return;
-            }
-            console.log('New user added successfully:', username);
-            res.send('Registration successful!');
-        });
+// Create an empty array in the user.json file if it doesn't exist
+fs.exists(filePath, (exists) => {
+  if (!exists) {
+    fs.writeFile(filePath, '[]', (err) => {
+      if (err) {
+        console.error('Error creating file:', err);
+      }
     });
+  }
 });
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+// Endpoint to get all users
+app.get('/user', (req, res) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    try {
+      const users = JSON.parse(data);
+      res.json(users);
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+});
+
+// Endpoint to register a new user
+app.post('/register', (req, res) => {
+  const userData = req.body;
+  if (!userData || Object.keys(userData).length === 0) {
+    return res.status(400).json({ error: 'User data is required' });
+  }
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    let users = [];
+    try {
+      users = JSON.parse(data);
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    // Log existing user data
+    console.log('Existing users:', users);
+
+    users.push(userData);
+    fs.writeFile(filePath, JSON.stringify(users, null, 2), (err) => {
+      if (err) {
+        console.error('Error writing file:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+      res.json({ message: 'User registered successfully' });
+    });
+  });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
