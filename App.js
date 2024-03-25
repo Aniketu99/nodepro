@@ -22,9 +22,9 @@ app.use((req, res, next) => {
 app.post("/api/register", (req, res) => {
     const userData = req.body;
     try {
-        const userJson = JSON.parse(fs.readFileSync('user.json'));
+        const userJson = JSON.parse(fs.readFileSync('./user.json'));
         userJson.push(userData);
-        fs.writeFileSync('user.json', JSON.stringify(userJson, null, 2));
+        s.writeFileSync('./user.json', JSON.stringify(userJson));
         res.json({ success: true, message: 'User registered successfully' });
     } catch (error) {
         console.error('Error registering user:', error);
