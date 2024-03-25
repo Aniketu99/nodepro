@@ -41,7 +41,7 @@ app.get("/api/user", (req, res) => {
 
 // Courses Routes
 
-const coursesJson = require("./courses.json");
+const courses = require("./courses.json");
 
 app.get("/api/courses", (req, res) => {
     res.json({ courses: courses});
