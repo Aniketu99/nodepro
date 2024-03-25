@@ -42,7 +42,7 @@ App.get("/Api/courses/:id",(req,res)=>{
      res.json({abc});
 });
 
-App.get("/Api/courses:categories",(req,res)=>{
+App.get("/Api/courses/:categories",(req,res)=>{
 
      var ca = (req.params.categories);
      
