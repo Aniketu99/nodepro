@@ -25,7 +25,7 @@ app.post("/api/register", (req, res) => {
         const userJson = JSON.parse(fs.readFileSync('./user.json'));
         userJson.push(userData);
         s.writeFileSync('./user.json', JSON.stringify(userJson));
-        res.json({ success: true, message: 'User registered successfully',data:userJson});
+        res.json({userJson});
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
