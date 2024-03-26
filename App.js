@@ -31,16 +31,16 @@ app.post("/login", (req, res) => {
 
     const logData = JSON.parse(login);
     
-    for(let i=0; i<logData.length; i++) {
-
-      if (logData[i].email == email && logData[i].password == password) {
-        currentuser = user;
-        res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
-      } else {
-        res.redirect('http://127.0.0.1:5500/EduMim/index.html');
-      }
-
-    }
+    res.json(logData);
+    
+    // if (logData[i].email == email && logData[i].password == password) {
+    //   currentuser = user;
+    //   res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
+    // } else {
+    //   res.redirect('http://127.0.0.1:5500/EduMim/index.html');
+    // }
+    
+    
     
   } catch (error) {
     console.error("Error reading user data:", error);
