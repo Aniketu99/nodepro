@@ -8,9 +8,9 @@ var currentuser;
 
 app.get("/user",(req,res)=>{
 
-  const userData = fs.readFileSync("user.json");
+  const userData = fs.readFileSync("user.json", "utf8");
   const user = JSON.parse(userData);
-  res.json({userData});
+  res.json({user});
 })
 
 //login
