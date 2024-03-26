@@ -5,29 +5,25 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/user", (req, res) => {
+app.post("/user/login", (req, res) => {
   try {
-    var currentuser = req.body
+    const { email, password } = req.body;
     const userData = fs.readFileSync("user.json", "utf8");
-    const user = userData.user[0].email;
+    const user = JSON.parse(userData);
 
-    res.json({user});
-    // if(user.email === currentuser.email && user.password === currentuser.password){
-
-    //   res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
-
-    // }else{
-      
-    //   res.redirect('http://127.0.0.1:5500/EduMim/index.html');
-
-    // }
+    if (user.email === email && user.password === password) {
+      res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
+    } else {
+      res.redirect('http://127.0.0.1:5500/EduMim/index.html');
+    }
   } catch (error) {
     console.error("Error reading user data:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-app.post("/register", (req, res) => {
+
+app.post("user/register", (req, res) => {
 
   try {
     const registerData = req.body;
