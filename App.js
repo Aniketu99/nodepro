@@ -9,9 +9,10 @@ app.get("/user", (req, res) => {
   try {
     var currentuser = req.body
     const userData = fs.readFileSync("user.json", "utf8");
-    const user = JSON.parse(userData);
+    const user = userData.user.email;
 
-    res.json({userData});
+
+    res.json({user});
     // if(user.email === currentuser.email && user.password === currentuser.password){
 
     //   res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
