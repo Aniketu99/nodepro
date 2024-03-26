@@ -31,14 +31,18 @@ app.post("/login", (req, res) => {
 
     const logData = JSON.parse(login);
     
-    res.json(logData[1].email);
+    logData.forEach((item) => {
+        
+      if (item.email === JSON.parse(email) && item.password == JSON.parse(password)) {
+        currentuser = user;
+        res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
+      } else {
+        res.redirect('http://127.0.0.1:5500/EduMim/index.html');
+      }
+
+    });
     
-    // if (logData[i].email == email && logData[i].password == password) {
-    //   currentuser = user;
-    //   res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
-    // } else {
-    //   res.redirect('http://127.0.0.1:5500/EduMim/index.html');
-    // }
+    
     
     
     
