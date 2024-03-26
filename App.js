@@ -8,12 +8,19 @@ var currentuser;
 
 app.get("/user", (req, res) => {
   try {
+  
     const data = fs.readFileSync("user.json", "utf8");
+
     const jsonData = JSON.parse(data);
-    const users = JSON.parse(jsonData.user);
+    
+    const users = jsonData.user;
+    
     res.json(users);
+
   } catch (err) {
+
     console.error("Error reading or parsing user data:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
