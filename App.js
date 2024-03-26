@@ -24,7 +24,7 @@ app.post("/register",(req,res)=>{
 
      var userData = req.body;
 
-     res.send(`${userData}`);
+    res.json({userData});
      
 });
 
