@@ -14,7 +14,7 @@ app.post("/user/login", (req, res) => {
     const user = JSON.parse(userData);
 
     if (user.email === email && user.password === password) {
-      currentuser = user
+      currentuser = user;
       res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
     } else {
       res.redirect('http://127.0.0.1:5500/EduMim/index.html');
