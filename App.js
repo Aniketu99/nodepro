@@ -10,15 +10,17 @@ app.get("/user", (req, res) => {
     var currentuser = req.body
     const userData = fs.readFileSync("user.json", "utf8");
     const user = JSON.parse(userData);
-    if(user.email === currentuser.email && user.password === currentuser.password){
 
-      res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
+    res.send(`${user.email, user.password , currentuser.email , currentuser.password}`);
+    // if(user.email === currentuser.email && user.password === currentuser.password){
 
-    }else{
+    //   res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
+
+    // }else{
       
-      res.redirect('http://127.0.0.1:5500/EduMim/index.html');
+    //   res.redirect('http://127.0.0.1:5500/EduMim/index.html');
 
-    }
+    // }
   } catch (error) {
     console.error("Error reading user data:", error);
     res.status(500).json({ error: "Internal Server Error" });
