@@ -31,14 +31,17 @@ app.post("/login", (req, res) => {
 
     const logData = JSON.parse(login);
     
-    logData.forEach(item => {
-      if (item.email == email && item.password == password) {
+    for(let i=0; i<logData.length; i++) {
+
+      if (logData[i].email == email && logData[i].password == password) {
         currentuser = user;
         res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
       } else {
         res.redirect('http://127.0.0.1:5500/EduMim/index.html');
       }
-    });
+
+    }
+    
   } catch (error) {
     console.error("Error reading user data:", error);
     res.status(500).json({ error: "Internal Server Error" });
