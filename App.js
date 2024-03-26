@@ -23,10 +23,11 @@ app.post("/register", (req, res) => {
     const registerData = req.body;
     const userData = fs.readFileSync("user.json", "utf8");
     const user = JSON.parse(userData);
-    const len = user.length-1;
+    const len = user.length;
     registerData.id=len;
     user.push(registerData);
     fs.writeFileSync("user.json", JSON.stringify(user));
+    res.redirect('http://127.0.0.1:5500/EduMim/index.html');
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ error: "Internal Server Error" });
