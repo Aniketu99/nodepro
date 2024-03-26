@@ -1,5 +1,4 @@
 const express = require('express');
-const { json } = require('body-parser');
 const fs = require('fs');
 const app = express();
 
