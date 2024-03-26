@@ -5,6 +5,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+var currentuser;
+
 app.post("/user/login", (req, res) => {
   try {
     const { email, password } = req.body;
@@ -12,6 +14,7 @@ app.post("/user/login", (req, res) => {
     const user = JSON.parse(userData);
 
     if (user.email === email && user.password === password) {
+      currentuser = user
       res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
     } else {
       res.redirect('http://127.0.0.1:5500/EduMim/index.html');
