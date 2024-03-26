@@ -1,22 +1,25 @@
-const express = require('express');
 const fs = require('fs');
+const express = require('express');
 const app = express();
+
+app.use(express.json());
+
+app.get("/user", (req, res) => {
+  try {
+  
+    const userData = fs.readFileSync("./user.json", "utf8");
+
+    const user = JSON.parse(userData);
+
+    res.json({ user });
+  } catch (error) {
+
+    console.error("Error reading user data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
-
-app.use(express.urlencoded({ extended: false }));
-
-app.get("/user",(req,res)=>{
-
-  var user = JSON.parse(fs.readFileSync("./user.jso"));
-
-     res.json({user})
-})
-
-app.get("/fake",(req,res)=>{
-
-     res.json({"res":"true"});
-})
-// Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is listening on port ${PORT}`);
 });
