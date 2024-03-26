@@ -13,8 +13,6 @@ app.get("/user", (req, res) => {
 
     const jsonData = JSON.parse(data);
     
-    const users = jsonData.user;
-    
     res.json(jsonData);
 
   } catch (err) {
