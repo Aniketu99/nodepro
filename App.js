@@ -10,6 +10,7 @@ var currentuser;
 app.get("/user",(req,res)=>{
 
   const userData = fs.readFileSync("user.json", "utf8");
+  const user = JSON.stringify(userData);
   res.json({userData});
   //user data
   
