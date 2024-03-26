@@ -26,10 +26,12 @@ app.get("/user", (req, res) => {
 app.post("/login", (req, res) => {
   try {
     const { email, password } = req.body;
-    const userData = fs.readFileSync("user.json", "utf8");
-    const user = JSON.parse(userData);
+
+    const login = fs.readFileSync("user.json", "utf8");
+
+    const logData = JSON.parse(login);
     
-    user.forEach(item => {
+    logData.forEach(item => {
       if (item.email == email && item.password == password) {
         currentuser = user;
         res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
