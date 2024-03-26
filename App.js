@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const app = express();
-
+const users = require('./user.json')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -9,9 +9,7 @@ var currentuser;
 
 app.get("/user",(req,res)=>{
 
-  const userData = fs.readFileSync("user.json", "utf8");
-  const user = JSON.stringify(userData);
-  res.json({userData});
+  res.json({users});
   //user data
   
 })
