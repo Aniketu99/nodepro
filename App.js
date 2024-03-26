@@ -6,13 +6,23 @@ app.use(express.urlencoded({ extended: true }));
 
 var currentuser;
 
-app.get("/user",(req,res)=>{
-
-  const userData = fs.readFileSync("user.json", "utf8");
-  const user = JSON.parse(userData);
-  const str = JSON.stringify(user);
-  res.json({str});
-})
+app.get("/user", (req, res) => {
+  fs.readFile("user.json", "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading user data:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+    
+    try {
+      const user = JSON.parse(data);
+      res.json({ user });
+    } catch (parseError) {
+      console.error("Error parsing user data:", parseError);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+});
 
 //login
 app.post("/login", (req, res) => {
