@@ -7,11 +7,12 @@ app.use(express.json());
 app.get("/user", (req, res) => {
   try {
   
-    const userData = fs.readFileSync("./user.json", "utf8");
+    const userData = fs.readFileSync("user.json", "utf8");
 
     const user = JSON.parse(userData);
 
     res.json({ user });
+
   } catch (error) {
 
     console.error("Error reading user data:", error);
