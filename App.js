@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const { json } = require('body-parser');
 const app = express();
 
 app.use(express.json());
@@ -24,7 +25,9 @@ app.post("/register",(req,res)=>{
 
      var userData = req.body;
 
-    res.json({userData});
+     var data = json.parse(userData);
+
+    res.json({data});
      
 });
 
