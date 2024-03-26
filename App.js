@@ -9,8 +9,7 @@ app.get("/user", (req, res) => {
   try {
     var currentuser = req.body
     const userData = fs.readFileSync("user.json", "utf8");
-    const user = userData.user.email;
-
+    const user = userData.user[0].email;
 
     res.json({user});
     // if(user.email === currentuser.email && user.password === currentuser.password){
