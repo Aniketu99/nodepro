@@ -25,7 +25,6 @@ app.post("/register", (req, res) => {
     const user = JSON.parse(userData);
     user.push(registerData);
     fs.writeFileSync("user.json", JSON.stringify(user));
-    window.location.reload();
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ error: "Internal Server Error" });
