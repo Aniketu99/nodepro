@@ -26,7 +26,7 @@ app.post("/register", (req, res) => {
     const len = user.length;
     registerData.id=len;
     user.push(registerData);
-    fs.writeFileSync("user.jsons", JSON.stringify(user));
+    fs.writeFileSync("user.json", JSON.stringify(user));
     res.redirect('http://127.0.0.1:5500/EduMim/index.html');
   } catch (error) {
     console.error("Error registering user:", error);
