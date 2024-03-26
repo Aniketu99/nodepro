@@ -11,6 +11,10 @@ app.get("/user",(req,res)=>{
      res.json({user})
 })
 
+app.get("/fake",(req,res)=>{
+
+     res.json({"res":"true"});
+})
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
