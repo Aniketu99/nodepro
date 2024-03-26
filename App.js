@@ -7,11 +7,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/user", (req, res) => {
   try {
-    var email = req.body.email;
-    var password = req.body.password;
+    var currentuser = req.body
     const userData = fs.readFileSync("user.json", "utf8");
     const user = JSON.parse(userData);
-    if(user.email === email && user.password === password){
+    if(user.email === currentuser.email && user.password === currentuser.password){
 
       res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
 
