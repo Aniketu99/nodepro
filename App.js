@@ -13,6 +13,7 @@ app.get("/user",(req,res)=>{
   res.json({userData});
 })
 
+//login
 app.post("/login", (req, res) => {
   try {
     const { email, password } = req.body;
