@@ -31,7 +31,7 @@ app.post("/login", (req, res) => {
 
     const logData = JSON.parse(login);
     
-    res.json(logData);
+    res.json(logData[0]);
     
     // if (logData[i].email == email && logData[i].password == password) {
     //   currentuser = user;
