@@ -22,7 +22,10 @@ app.get("/user", (req, res) => {
 
 app.post("/register",(req,res)=>{
 
-     res.send(`done`);
+     var userData = req.body;
+
+     res.send(`${userData}`);
+     
 });
 
 const PORT = process.env.PORT || 3000;
