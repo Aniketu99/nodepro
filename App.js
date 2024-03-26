@@ -7,6 +7,13 @@ app.use(express.urlencoded({ extended: true }));
 
 var currentuser;
 
+app.get("/user",(req,res)=>{
+
+  const userData = fs.readFileSync("user.json", "utf8");
+  res.json(userData);
+  
+})
+
 app.post("/user/login", (req, res) => {
   try {
     const { email, password } = req.body;
