@@ -1,7 +1,6 @@
 const express = require('express');
 const fs = require('fs');
 const app = express();
-const users = require('./user.json')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -9,7 +8,12 @@ var currentuser;
 
 app.get("/user",(req,res)=>{
 
-  res.json({users});
+  const userData = fs.readFileSync("user.json", "utf8");
+  const user = JSON.parse(userData);
+  const d = JSON.stringify(user);
+
+  res.json({d});
+
   
 })
 
@@ -18,7 +22,7 @@ app.post("/login", (req, res) => {
     const { email, password } = req.body;
     const userData = fs.readFileSync("user.json", "utf8");
     const user = JSON.parse(userData);
-
+    
     if (user.email === email && user.password === password) {
       currentuser = user;
       res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
