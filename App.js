@@ -10,7 +10,6 @@ var currentuser;
 app.get("/user",(req,res)=>{
 
   res.json({users});
-  //user data
   
 })
 
