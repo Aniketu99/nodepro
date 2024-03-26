@@ -15,7 +15,7 @@ app.get("/user", (req, res) => {
     
     const users = jsonData.user;
     
-    res.json(users);
+    res.json(jsonData);
 
   } catch (err) {
 
