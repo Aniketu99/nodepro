@@ -23,6 +23,8 @@ app.post("/register", (req, res) => {
     const registerData = req.body;
     const userData = fs.readFileSync("user.json", "utf8");
     const user = JSON.parse(userData);
+    const len = user.length-1;
+    registerData.id=len;
     user.push(registerData);
     fs.writeFileSync("user.json", JSON.stringify(user));
   } catch (error) {
