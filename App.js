@@ -31,7 +31,7 @@ app.post("/login", (req, res) => {
   }
 });
 
-
+//regitser
 app.post("/register", (req, res) => {
 
   try {
