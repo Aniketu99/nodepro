@@ -13,7 +13,7 @@ app.get("/user",(req,res)=>{
   
 })
 
-app.post("/user/login", (req, res) => {
+app.post("/login", (req, res) => {
   try {
     const { email, password } = req.body;
     const userData = fs.readFileSync("user.json", "utf8");
@@ -32,7 +32,7 @@ app.post("/user/login", (req, res) => {
 });
 
 
-app.post("user/register", (req, res) => {
+app.post("/register", (req, res) => {
 
   try {
     const registerData = req.body;
