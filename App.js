@@ -30,22 +30,17 @@ app.post("/login", (req, res) => {
     const login = fs.readFileSync("user.json", "utf8");
 
     const logData = JSON.parse(login);
-    
-    logData.forEach((item) => {
-        
-      if (item.email === JSON.parse(email) && item.password == JSON.parse(password)) {
-        currentuser = user;
-        res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
-      } else {
-        res.redirect('http://127.0.0.1:5500/EduMim/index.html');
-      }
 
-    });
-    
-    
-    
-    
-    
+    var flag = logData.find(item => item.email == email && item.password == password);
+
+    if (flag) {
+
+      res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
+
+    } else {
+      
+      res.redirect('http://127.0.0.1:5500/EduMim/index.html');
+    }
   } catch (error) {
     console.error("Error reading user data:", error);
     res.status(500).json({ error: "Internal Server Error" });
