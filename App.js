@@ -7,21 +7,14 @@ app.use(express.urlencoded({ extended: true }));
 var currentuser;
 
 app.get("/user", (req, res) => {
-  fs.readFile("user.json", "utf8", (err, data) => {
-    if (err) {
-      console.error("Error reading user data:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-    
-    try {
-      const user = JSON.parse(data);
-      res.json({ user });
-    } catch (parseError) {
-      console.error("Error parsing user data:", parseError);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
+  try {
+    const data = fs.readFileSync("user.json", "utf8");
+    const jsonData = JSON.parse(data);
+    const users = JSON.parse(jsonData.user);
+    res.json(users);
+  } catch (err) {
+    console.error("Error reading or parsing user data:", err);
+  }
 });
 
 //login
@@ -45,22 +38,21 @@ app.post("/login", (req, res) => {
 
 //regitser
 app.post("/register", (req, res) => {
-
   try {
     const registerData = req.body;
-    const userData = fs.readFileSync("user.json", "utf8");
-    const user = JSON.parse(userData);
-    const len = user.length;
-    registerData.id=len;
-    user.push(registerData);
-    fs.writeFileSync("user.json", JSON.stringify(user));
+    let userData = fs.readFileSync("user.json", "utf8");
+    let users = JSON.parse(userData); 
+
+    registerData.id = users.length; 
+    users.push(registerData);
+
+    fs.writeFileSync("user.json", JSON.stringify(users, null, 2));
     res.redirect('http://127.0.0.1:5500/EduMim/index.html');
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
