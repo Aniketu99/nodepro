@@ -110,14 +110,15 @@ app.post("/register", (req, res) => {
   
 });
 
-app.get("/currentuser",(req,res)=>{
-
-       const currentuserdata = fs.readFileSync("currentuser.json", "utf8");
-      
-       const currentuser = JSON.parse(currentuserdata);
-
-       res.json({currentuser});
-     
+app.get("/currentuser", (req, res) => {
+  try {
+      const currentuserdata = fs.readFileSync("currentuser.json", "utf8");
+      const currentuser = JSON.parse(currentuserdata);
+      res.json({ currentuser });
+  } catch (error) {
+      console.error("Error reading or parsing file:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 app.get("/logout",(req,res)=>{
