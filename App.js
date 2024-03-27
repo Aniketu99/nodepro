@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-var currentuser = {};
+var currentuser = [];
 
 app.get("/user", (req, res) => {
   try {
@@ -100,7 +100,7 @@ app.get("/currentuser",(req,res)=>{
 
 app.get("/logout",(req,res)=>{
 
-   currentuser = {};
+    
 
      res.redirect('http://127.0.0.1:5500/EduMim/index.html');
 })
