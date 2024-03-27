@@ -98,6 +98,11 @@ app.get("/currentuser",(req,res)=>{
      
 });
 
+app.get("/logout",(req,res)=>{
+
+     currentuser = {};
+})
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
