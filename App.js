@@ -110,23 +110,14 @@ app.post("/register", (req, res) => {
   
 });
 
+
 app.get("/currentuser", (req, res) => {
+
     try {
-        
-        const filePath = __dirname + "/currentuser.json";
-
-        if (fs.existsSync(filePath)) {
-            const currentuserdata = fs.readFileSync(filePath, "utf8");
-            const currentuser = JSON.parse(currentuserdata);
-            res.json({ currentuser });
-
-        } else {
-            
-            res.status(404).json({ error: "File not found" });
-        }
-        
+        const currentuserdata = fs.readFileSync("currentuser.json", "utf8");
+        const currentuser = JSON.parse(currentuserdata);
+        res.json({ currentuser });
     } catch (error) {
-  
         console.error("Error reading or parsing file:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
