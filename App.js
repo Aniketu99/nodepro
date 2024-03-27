@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-var currentuser = [];
+var currentuser = {};
 
 app.get("/user", (req, res) => {
   try {
