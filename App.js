@@ -31,10 +31,23 @@ app.post("/login", (req, res) => {
 
     const logData = JSON.parse(login);
 
-    var flag = logData.find(item => item.email == email && item.password == password);
+    var flag = logData.find((item)=>{
+        
+      if(item.email == email && item.password == password){
+           
+           currentuser = item;
+
+           return true;
+
+      }else{
+
+            return false;
+      }
+
+    });
 
     if (flag) {
-
+      
       res.redirect('http://127.0.0.1:5500/EduMim/courseDashBoard.html');
 
     } else {
@@ -66,6 +79,7 @@ app.post("/register", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
