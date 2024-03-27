@@ -39,7 +39,7 @@ app.post("/login", (req, res) => {
 
         try {
   
-          const currentuserdata = fs.readFileSync("currentuser.json", "utf8");
+          const currentuserdata = fs.readFileSync("./currentuser.json", "utf8");
       
           let currentuser = JSON.parse(currentuserdata);
           
@@ -114,7 +114,7 @@ app.post("/register", (req, res) => {
 app.get("/currentuser", (req, res) => {
 
     try {
-        const currentuserdata = fs.readFileSync("currentuser.json", "utf8");
+        const currentuserdata = fs.readFileSync("./currentuser.json", "utf8");
         const currentuser = JSON.parse(currentuserdata);
         res.json({ currentuser });
     } catch (error) {
