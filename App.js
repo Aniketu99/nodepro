@@ -4,8 +4,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-var currentuser = {};
-
 app.get("/user", (req, res) => {
   try {
   
@@ -38,9 +36,25 @@ app.post("/login", (req, res) => {
     var flag = logData.find((item)=>{
         
       if(item.email == email && item.password == password){
-           
-           currentuser = item;
 
+        try {
+  
+          const currentuserdata = fs.readFileSync("currentuser.json", "utf8");
+      
+          let currentuser = JSON.parse(currentuserdata);
+          
+          currentuser.push(item);
+
+          fs.writeFileSync("currentuser.json", JSON.stringify(users, null, 2));
+      
+        } catch (err) {
+      
+          console.error("Error reading or parsing user data:", err);
+      
+          res.status(500).json({ error: "Internal Server Error" });
+      
+        }
+           
            return true;
 
       }else{
@@ -94,13 +108,34 @@ app.post("/register", (req, res) => {
 
 app.get("/currentuser",(req,res)=>{
 
-     res.json({currentuser});
+       const currentuserdata = fs.readFileSync("currentuser.json", "utf8");
+      
+       const currentuser = JSON.parse(currentuserdata);
+
+       res.json({currentuser});
      
 });
 
 app.get("/logout",(req,res)=>{
 
+  try {
+  
+    const currentuserdata = fs.readFileSync("currentuser.json", "utf8");
+
+    let currentuser = JSON.parse(currentuserdata);
     
+    currentuser.pop();
+
+    fs.writeFileSync("currentuser.json", JSON.stringify(users, null, 2));
+
+  } catch (err) {
+
+    console.error("Error reading or parsing user data:", err);
+
+    res.status(500).json({ error: "Internal Server Error" });
+
+  }
+     
 
      res.redirect('http://127.0.0.1:5500/EduMim/index.html');
 })
