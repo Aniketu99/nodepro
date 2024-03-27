@@ -1,1 +1,1 @@
-https://courseapi-mlik.onrender.com
+https://courseapi-mlik.onrender.com/currentuser

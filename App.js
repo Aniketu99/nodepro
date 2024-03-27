@@ -100,7 +100,7 @@ app.get("/currentuser",(req,res)=>{
 
 app.get("/logout",(req,res)=>{
 
-     currentuser = {};
+   currentuser = {};
 
      res.redirect('http://127.0.0.1:5500/EduMim/index.html');
 })
