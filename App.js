@@ -72,6 +72,7 @@ app.post("/login", (req, res) => {
       
       res.redirect('http://127.0.0.1:5500/EduMim/index.html');
     }
+
   } catch (error) {
 
     console.error("Error reading user data:", error);
@@ -82,7 +83,9 @@ app.post("/login", (req, res) => {
 });
 
 //regitser
+
 app.post("/register", (req, res) => {
+
   try {
     const registerData = req.body;
 
@@ -104,6 +107,7 @@ app.post("/register", (req, res) => {
 
     res.status(500).json({ error: "Internal Server Error" });
   }
+  
 });
 
 app.get("/currentuser",(req,res)=>{
