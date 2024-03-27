@@ -78,6 +78,10 @@ app.post("/register", (req, res) => {
   }
 });
 
+app.get("/currentuser",(req,res)=>{
+   
+     res.json({currentuser});
+});
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
