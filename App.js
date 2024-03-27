@@ -101,6 +101,8 @@ app.get("/currentuser",(req,res)=>{
 app.get("/logout",(req,res)=>{
 
      currentuser = {};
+
+     res.redirect('http://127.0.0.1:5500/EduMim/index.html');
 })
 
 const PORT = process.env.PORT || 3000;
